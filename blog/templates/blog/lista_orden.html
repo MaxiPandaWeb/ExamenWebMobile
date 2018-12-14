@@ -1,0 +1,50 @@
+{% extends "blog/base.html" %}
+{% block content %} 
+	{% for orden in ordens %}
+		<article class="media content-section">
+			{% for post in posts %}
+				<img class="rounded-circle article-img" src="{{ post.autor.profile.image.url }}">
+			{% endfor %}
+		  <div class="media-body">
+		    <div class="article-metadata">
+		      <small class="text-muted">Folio: {{ orden.folio_or }}</small>
+		      <h4>Estado: {{ orden.estado_or }} </h4>
+		    </div>
+	      	<div>
+		      	<a class="btn btn-secondary btn-sm mt-1 mb-1" href="{%url 'orden-update' orden.folio_or %}">
+		      	Actualizar </a>	   
+	      	</div>
+
+		    <h2><a class="article-title">{{ orden.cliente_or }}</a></h2>
+		    <p class="article-content">Fecha: {{ orden.fecha_or}}
+		    						   Id ascensor: {{orden.id_ascensor}}
+		    						   Modelo ascensor: {{ orden.modelo_ascensor }}
+		    						   Fallas: {{ orden.fallos_detectados }}
+		    						   Reparaciones: {{ orden.reparaciones_or }}
+		    						   Piezas cambiadas: {{ orden.piezas_or }}
+		    						   Técnigo asignado: {{ orden.nom_user }}</p>
+		  </div>
+		</article>
+	{% endfor %}
+
+	{% if is_paginated%}
+		{% if page_obj.has_previous %}
+			<a class="btn btn-outline-info mb-4" href="?page=1">Primera</a>
+			<a class="btn btn-outline-info mb-4" href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+		{% endif %}
+
+		{% for num in page_obj.paginator.page_range %}
+			{% if page_obj.number == num %}
+				<a class="btn btn-info mb-4" href="?page={{ num }}">{{ num }}</a>
+			{% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3'  %}
+				<a class="btn btn-outline-info mb-4" href="?page={{ num }}">{{ num }}</a>	
+			{% endif %}
+		{% endfor %}
+
+		{% if page_obj.has_next %}
+			<a class="btn btn-outline-info mb-4" href="?page={{ page_obj.next_page_number }}">Siguiente</a>
+			<a class="btn btn-outline-info mb-4" href="?page={{ page_obj.paginator.num_pages }}">última</a>
+		{% endif %}
+
+	{% endif%}
+{% endblock content %}

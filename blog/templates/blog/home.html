@@ -1,0 +1,58 @@
+{% extends "blog/base.html" %}
+{% block content %} 
+	{% for post in posts %}
+		{% if user.username == "maximo" %}
+		<article class="media content-section">
+			<img class="rounded-circle article-img" src="{{ post.tecnico.profile.image.url }}">
+		  <div class="media-body">
+		    <div class="article-metadata">
+		      <small class="text-muted">{{ post.direc_cli }}</small>
+		    </div>
+		    <div>
+		      	<a class="btn btn-success btn-sm mt-1 mb-1" href="{%url 'orden-crear' %}">Generar órden </a>      	
+	      	</div>
+		    <h2><a class="article-title" href="{% url 'post-detail' post.id %}">{{ post.nom_cli }}</a></h2>
+		    <p class="article-content">Ciudad: {{ post.ciudad_cli}}
+		    						   Comuna: {{post.comuna_cli}}
+		    						   Telefono: {{ post.telefono_cli }}
+		    						   Correo: {{ post.correo_cli }}
+		    						   Técnico asignado: {{ post.tecnico }} </p>
+		  </div>
+		</article>
+		{% endif %}
+	{% endfor %}
+		{% if user.username != "maximo" %}
+			<article class="media content-section">
+			  <div class="media-body">
+			    <div class="article-metadata">
+			      <small class="text-muted">Bienvenid@</small>
+			    </div>
+			    <h2><a class="article-title">{{ user.username }}</a></h2>
+			  </div>
+			</article>
+		{% endif %}
+{% if user.username == "maximo" %}
+	{% if is_paginated%}
+		{% if page_obj.has_previous %}
+			<a class="btn btn-outline-info mb-4" href="?page=1">Primera</a>
+			<a class="btn btn-outline-info mb-4" href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+		{% endif %}
+
+		{% for num in page_obj.paginator.page_range %}
+			{% if page_obj.number == num %}
+				<a class="btn btn-info mb-4" href="?page={{ num }}">{{ num }}</a>
+			{% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3'  %}
+				<a class="btn btn-outline-info mb-4" href="?page={{ num }}">{{ num }}</a>	
+			{% endif %}
+		{% endfor %}
+
+		{% if page_obj.has_next %}
+			<a class="btn btn-outline-info mb-4" href="?page={{ page_obj.next_page_number }}">Siguiente</a>
+			<a class="btn btn-outline-info mb-4" href="?page={{ page_obj.paginator.num_pages }}">última</a>
+		{% endif %}
+
+	{% endif%}
+{% else %}
+	
+{% endif %}
+{% endblock content %}
