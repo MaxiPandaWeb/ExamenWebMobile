@@ -15,6 +15,6 @@ pytz==2018.5
 query-string==2018.11.20
 request==2018.11.20
 requests==2.21.0
-urllib3==1.24.1
+urllib3==1.26.5
 virtualenv==16.1.0
 virtualenv-clone==0.4.0
